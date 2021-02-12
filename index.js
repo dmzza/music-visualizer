@@ -3,10 +3,15 @@ let canvas
 let context
 /** @type AudioElement */
 let audioElement
+function constructAudioContext() {
+  if(typeof(AudioContext) == "undefined") {
+    return new webkitAudioContext()
+  } else {
+    return new AudioContext()
+  }
+}
 /** @type AudioContext */
-let audioContext = 
-  // new AudioContext()
-  new webkitAudioContext()
+let audioContext = constructAudioContext()
 /** @type AnalyserNode */
 let analyser = audioContext.createAnalyser()
 analyser.fftSize = 2048 // max: 2048
