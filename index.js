@@ -38,9 +38,6 @@ function draw() {
   if(i === 1) {
     audioContext.resume()
   }
-  if(i > 100) {
-    return;
-  }
   analyser.getByteFrequencyData(data)
   let normalData = [...data]
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -51,5 +48,5 @@ function draw() {
     context.lineTo(space * j, canvas.height-value);
     context.stroke();
   })
-  setTimeout(draw, 10)
+  requestAnimationFrame(draw)
 }
