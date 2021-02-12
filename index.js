@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 function draw() {
   i++;
-  if(i > 1000) {
+  if(i > 100) {
     return;
   }
   analyser.getByteFrequencyData(data)
