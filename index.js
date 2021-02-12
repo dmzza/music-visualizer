@@ -3,10 +3,10 @@ let canvas
 let context
 let i = 0
 
-function didLoad() {
+window.addEventListener('DOMContentLoaded', function() {
   canvas = document.getElementById("visualization")
   context = canvas.getContext("2d")
-}
+})
 
 function draw() {
   i++;
