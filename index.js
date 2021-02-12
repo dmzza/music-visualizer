@@ -43,15 +43,13 @@ function draw() {
   }
   analyser.getByteFrequencyData(data)
   let normalData = [...data]
-  console.log(normalData)
-  context.beginPath()
-  context.moveTo(100, 200)
-  context.lineTo(200, 200)
-  context.lineTo(200, 100)
-  context.lineTo(100, 200)
-  context.closePath()
-
-  context.stroke()
-  context.rotate(-0.1)
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  let space = canvas.width / data.length;
+  normalData.forEach((value, j)=>{
+    context.beginPath();
+    context.moveTo(space * j, canvas.height);
+    context.lineTo(space * j, canvas.height-value);
+    context.stroke();
+  })
   setTimeout(draw, 10)
 }
