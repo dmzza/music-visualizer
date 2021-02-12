@@ -35,6 +35,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
 function draw() {
   i++;
+  if(i === 1) {
+    audioContext.resume()
+  }
   if(i > 100) {
     return;
   }
