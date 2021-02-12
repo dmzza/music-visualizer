@@ -12,6 +12,7 @@
  */
 const os = require('os');
 const dns = require('dns');
+const cors = require('cors');
 const express = require('express');
 const request = require('request');
 
@@ -23,6 +24,8 @@ const serverport = (process.env.PORT || process.env.PROXY_PORT || 3000);
 
 // Any streaming radio URI
 const radiouri = 'http://i50.letio.com/9170.aac';
+
+app.use(cors())
 
 app.get('/', (req, res) => {
   process.stdout.write('Connected to server\n');
