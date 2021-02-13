@@ -115,12 +115,14 @@ function identifyLongCrest(data) {
     if(data[i] > 128) {
       if(startingPoint === 0) {
         startingPoint = i
-      } else if(i - startingPoint > 200) {
-        endingPoint = i
       }
     } else {
       if(startingPoint !== 0) {
-        startingPoint = 0
+        if(i - startingPoint > 200) {
+          endingPoint = i
+        } else {
+          startingPoint = 0
+        }
       }
     }
     i++
