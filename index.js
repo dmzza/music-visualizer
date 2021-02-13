@@ -40,6 +40,7 @@ const blue = `rgb(0,0,255)`
 const green = `rgb(0,200,0)`
 const purple = `rgb(200,0,255)`
 const teal = `rgb(0,200,255)`
+const red = `rgb(255,0,0)`
 function draw(delay) {
   i++;
   if(i === 1) {
@@ -50,6 +51,7 @@ function draw(delay) {
   let normalData = [...data]
   let smoothData = exponentialSmoothing(0.3, normalData, lastData)
   // let smoothData = twoDimensionalMovingAverage(normalData, lastData)
+  let [startingPoint, endingPoint] = identifyLongCrest(smoothData)
   context.clearRect(0, 0, canvas.width, canvas.height);
   const dataLength = data.length
   const space = canvas.width / dataLength
@@ -70,6 +72,9 @@ function draw(delay) {
       } else {
         color = teal
       }
+    }
+    if(j >= startingPoint && j <= endingPoint) {
+      color = red
     }
     context.beginPath();
     context.strokeStyle = color
@@ -99,4 +104,26 @@ function twoDimensionalMovingAverage(data, previousData) {
     return (previousData[previousIndex] + previousData[i] + previousData[nextIndex] +
             data[previousIndex] + data[i] + data[nextIndex]) / 6
   })
+}
+
+function identifyLongCrest(data) {
+  let startingPoint = 0
+  let endingPoint = 0
+  let i = 0
+  let dataLength = data.length
+  while(endingPoint === 0 && i < dataLength) {
+    if(data[i] > 128) {
+      if(startingPoint === 0) {
+        startingPoint = i
+      } else if(i - startingPoint > 200) {
+        endingPoint = i
+      }
+    } else {
+      if(startingPoint !== 0) {
+        startingPoint = 0
+      }
+    }
+    i++
+  }
+  return [startingPoint, endingPoint]
 }
