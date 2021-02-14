@@ -76,6 +76,12 @@ const green = `rgb(0,200,0)`
 const purple = `rgb(200,0,255)`
 const teal = `rgb(0,200,255)`
 const red = `rgb(255,0,0)`
+const palette = {
+  turqoise: `#01c5c4`,
+  seaGreen: `#b8de6f`,
+  yellow: `#f1e189`,
+  orange: `#f39233`
+}
 function draw(delay) {
   i++;
   if(i === 1) {
@@ -86,14 +92,19 @@ function draw(delay) {
   let normalData = [...data]
   let smoothData = exponentialSmoothing(0.3, normalData, lastData)
   // let smoothData = twoDimensionalMovingAverage(normalData, lastData)
-  let [startingPoint, endingPoint] = identifyLongCrest(smoothData)
+  let [startingPoint1, endingPoint1] = identifyLongCrest(smoothData)
+  let [startingPoint2, endingPoint2] = identifyLongCrest(smoothData, endingPoint1)
+  let [startingPoint3, endingPoint3] = identifyLongCrest(smoothData, endingPoint2)
+  let [startingPoint4, endingPoint4] = identifyLongCrest(smoothData, endingPoint3)
+  let [startingPoint5, endingPoint5] = identifyLongCrest(smoothData, endingPoint4)
+  let [startingPoint6, endingPoint6] = identifyLongCrest(smoothData, endingPoint5)
   context.clearRect(0, 0, canvas.width, canvas.height);
   const dataLength = data.length
   const space = canvas.width / dataLength
   const maxIndex = dataLength - 1
   smoothData.forEach((value, j)=>{
-    let color
-    let previousIndex = Math.max(j-1, 0)
+    let color = blue
+    /*let previousIndex = Math.max(j-1, 0)
     let nextIndex = Math.min(j+1, maxIndex)
     if(value < 128) {
       if(delay && lastData[j] < 128 && lastData[previousIndex] < 128 && lastData[nextIndex] < 128) {
@@ -107,10 +118,21 @@ function draw(delay) {
       } else {
         color = teal
       }
+    }*/
+    if(j >= startingPoint1 && j <= endingPoint1) {
+      color = palette.turqoise
+    } else if(j >= startingPoint2 && j <= endingPoint2) {
+      color = palette.seaGreen
+    } else if(j >= startingPoint3 && j <= endingPoint3) {
+      color = palette.yellow
+    } else if(j >= startingPoint4 && j <= endingPoint4) {
+      color = palette.orange
+    } else if(j >= startingPoint5 && j <= endingPoint5) {
+      color = palette.turqoise
+    } else if(j >= startingPoint6 && j <= endingPoint6) {
+      color = palette.seaGreen
     }
-    if(j >= startingPoint && j <= endingPoint) {
-      color = red
-    }
+    
     context.beginPath();
     context.strokeStyle = color
     context.lineWidth = 1
@@ -141,10 +163,10 @@ function twoDimensionalMovingAverage(data, previousData) {
   })
 }
 
-function identifyLongCrest(data) {
+function identifyLongCrest(data, startingAt = 0) {
   let startingPoint = 0
   let endingPoint = 0
-  let i = 0
+  let i = startingAt
   let dataLength = data.length
   while(endingPoint === 0 && i < dataLength) {
     if(data[i] > 128) {
@@ -153,7 +175,7 @@ function identifyLongCrest(data) {
       }
     } else {
       if(startingPoint !== 0) {
-        if(i - startingPoint > 200) {
+        if(i - startingPoint > 50) {
           endingPoint = i
         } else {
           startingPoint = 0
