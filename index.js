@@ -31,7 +31,8 @@ window.addEventListener('DOMContentLoaded', function() {
   audioElement = document.getElementById("source")
   audioElement.addEventListener("play", function () {
     source = audioContext.createMediaElementSource(audioElement)
-    source.connect(analyser).connect(audioContext.destination)
+    source.connect(analyser)
+    source.connect(audioContext.destination)
 
     // Taken from: https://codepen.io/Rumyra/pen/oPxvYB/
     // change this to change the filter - can be 0-3 and will reference the values in the array below
@@ -167,11 +168,11 @@ function identifyLongCrest(data) {
 function toggleFilter() {
   if(isFiltered) {
     source.disconnect(iirfilter)
-    source.connect(analyser).connect(audioContext.destination)
+    source.connect(analyser)
     isFiltered = false
   } else {
     source.disconnect(analyser)
-    source.connect(iirfilter).connect(analyser).connect(audioContext.destination)
+    source.connect(iirfilter).connect(analyser)
     isFiltered = true
   }
 }
