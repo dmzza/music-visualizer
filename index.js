@@ -74,6 +74,7 @@ window.addEventListener('DOMContentLoaded', function() {
   })
 })
 
+const backgroundColor = `#FFFFFF`
 const blue = `rgb(0,0,255)`
 const green = `rgb(0,200,0)`
 const purple = `rgb(200,0,255)`
@@ -132,7 +133,7 @@ function draw(delay) {
   const space = canvas.width / dataLength
   const maxIndex = dataLength - 1
   smoothData.forEach((value, j)=>{
-    let color = blue
+    let color = backgroundColor
     /*let previousIndex = Math.max(j-1, 0)
     let nextIndex = Math.min(j+1, maxIndex)
     if(value < 128) {
