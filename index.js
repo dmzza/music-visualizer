@@ -134,21 +134,6 @@ function draw(delay) {
   const maxIndex = dataLength - 1
   smoothData.forEach((value, j)=>{
     let color = backgroundColor
-    /*let previousIndex = Math.max(j-1, 0)
-    let nextIndex = Math.min(j+1, maxIndex)
-    if(value < 128) {
-      if(delay && lastData[j] < 128 && lastData[previousIndex] < 128 && lastData[nextIndex] < 128) {
-        color = blue
-      } else {
-        color = purple
-      }
-    } else {
-      if(delay && lastData[j] >= 128 && lastData[previousIndex] >= 128 && lastData[nextIndex] >= 128) {
-        color = green
-      } else {
-        color = teal
-      }
-    }*/
     if(crestIsActive[0] && j >= nextCrests[0][0] && j <= nextCrests[0][1]) {
       color = palette.turqoise
     } else if(crestIsActive[1] && j >= nextCrests[1][0] && j <= nextCrests[1][1]) {
