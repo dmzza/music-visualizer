@@ -100,7 +100,8 @@ function draw(delay) {
   // analyser.getByteFrequencyData(data)
   analyser.getByteTimeDomainData(data)
   let normalData = [...data]
-  let smoothData = exponentialSmoothing(0.3, normalData, lastData)
+  let smoothData = normalData 
+  // let smoothData = exponentialSmoothing(0.3, normalData, lastData)
   // let smoothData = twoDimensionalMovingAverage(normalData, lastData)
   let [startingPoint1, endingPoint1] = identifyLongCrest(smoothData)
   let [startingPoint2, endingPoint2] = identifyLongCrest(smoothData, endingPoint1)
