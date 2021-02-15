@@ -23,6 +23,7 @@ let source
 /** @type Uint8Array */
 let data
 let lastData
+let lastCrests
 let i = 0
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -68,6 +69,8 @@ window.addEventListener('DOMContentLoaded', function() {
     data = new Uint8Array(analyser.frequencyBinCount);
     lastData = new Array(analyser.frequencyBinCount);
     lastData.fill(128)
+    lastCrests = new Array(6)
+    lastCrests.fill([0, 0])
   })
 })
 
@@ -87,6 +90,12 @@ function draw(delay) {
   if(i === 1) {
     audioContext.resume()
   }
+  // next idea: draw the left/right channels on top of each other, with the right channel
+  // being the invesrse. Left channel bar: 0 -> value. Right channel bar: value -> canvasHeight
+  if(i % 2 !== 0) {
+    requestAnimationFrame(() => draw(true))
+    return
+  }
   // analyser.getByteFrequencyData(data)
   analyser.getByteTimeDomainData(data)
   let normalData = [...data]
@@ -98,6 +107,26 @@ function draw(delay) {
   let [startingPoint4, endingPoint4] = identifyLongCrest(smoothData, endingPoint3)
   let [startingPoint5, endingPoint5] = identifyLongCrest(smoothData, endingPoint4)
   let [startingPoint6, endingPoint6] = identifyLongCrest(smoothData, endingPoint5)
+  let crests = [
+    [startingPoint1, endingPoint1],
+    [startingPoint2, endingPoint2],
+    [startingPoint3, endingPoint3],
+    [startingPoint4, endingPoint4],
+    [startingPoint5, endingPoint5],
+    [startingPoint6, endingPoint6],
+  ]
+  let nextCrests = [...lastCrests]
+  let crestIsActive = new Array(6)
+  crestIsActive.fill(false)
+  crests.forEach((crest) => {
+    if(crest[1] !== 0) {
+      let nearestCrestIndex = findNearestCrest(crest, lastCrests)
+      lastCrests[nearestCrestIndex] = [0, 0]
+      nextCrests[nearestCrestIndex] = crest
+      crestIsActive[nearestCrestIndex] = true
+    }
+  })
+  lastCrests = [...nextCrests]
   context.clearRect(0, 0, canvas.width, canvas.height);
   const dataLength = data.length
   const space = canvas.width / dataLength
@@ -119,17 +148,17 @@ function draw(delay) {
         color = teal
       }
     }*/
-    if(j >= startingPoint1 && j <= endingPoint1) {
+    if(crestIsActive[0] && j >= nextCrests[0][0] && j <= nextCrests[0][1]) {
       color = palette.turqoise
-    } else if(j >= startingPoint2 && j <= endingPoint2) {
+    } else if(crestIsActive[1] && j >= nextCrests[1][0] && j <= nextCrests[1][1]) {
       color = palette.seaGreen
-    } else if(j >= startingPoint3 && j <= endingPoint3) {
+    } else if(crestIsActive[2] && j >= nextCrests[2][0] && j <= nextCrests[2][1]) {
       color = palette.yellow
-    } else if(j >= startingPoint4 && j <= endingPoint4) {
+    } else if(crestIsActive[3] && j >= nextCrests[3][0] && j <= nextCrests[3][1]) {
       color = palette.orange
-    } else if(j >= startingPoint5 && j <= endingPoint5) {
+    } else if(crestIsActive[4] && j >= nextCrests[4][0] && j <= nextCrests[4][1]) {
       color = palette.turqoise
-    } else if(j >= startingPoint6 && j <= endingPoint6) {
+    } else if(crestIsActive[5] && j >= nextCrests[5][0] && j <= nextCrests[5][1]) {
       color = palette.seaGreen
     }
     
@@ -200,4 +229,19 @@ function toggleFilter() {
     source.connect(iirfilter).connect(analyser)
     isFiltered = true
   }
+}
+
+function findNearestCrest(newCrest, previousCrests) {
+  let [newStartingPoint, newEndingPoint] = newCrest
+  let nearestCrestIndex = 0
+  const [firstStartingPoint, firstEndingPoint] = previousCrests[nearestCrestIndex]
+  let shorestDistance = Math.abs(newStartingPoint - firstStartingPoint) + Math.abs(newEndingPoint - firstEndingPoint)
+  previousCrests.forEach(([startingPoint, endingPoint], i) => {
+    let distance = Math.abs(newStartingPoint - startingPoint) + Math.abs(newEndingPoint - endingPoint)
+    if(distance < shorestDistance) {
+      nearestCrestIndex = i
+      shorestDistance = distance
+    }
+  })
+  return nearestCrestIndex
 }
