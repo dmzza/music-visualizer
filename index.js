@@ -213,7 +213,7 @@ function identifyLongCrest(data, startingAt = 0) {
     }
     i++
   }
-  if(data[i - 1] > 128) {
+  if(endingPoint === 0 && data[i - 1] > 128) {
     endingPoint = i - 1
   }
   return [startingPoint, endingPoint]
