@@ -128,7 +128,6 @@ function draw(delay) {
     }
   })
   lastCrests = [...nextCrests]
-  context.clearRect(0, 0, canvas.width, canvas.height);
   const dataLength = data.length
   const space = canvas.width / dataLength
   const maxIndex = dataLength - 1
