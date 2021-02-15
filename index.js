@@ -129,6 +129,8 @@ function draw(delay) {
     }
   })
   lastCrests = [...nextCrests]
+  context.fillStyle = `rgba(0,0,0,0.01)`
+  context.fillRect(0, 0, canvas.width, canvas.height)
   const dataLength = data.length
   const space = canvas.width / dataLength
   const maxIndex = dataLength - 1
