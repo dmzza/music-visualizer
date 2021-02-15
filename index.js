@@ -153,6 +153,8 @@ function draw(delay) {
     context.lineWidth = 1
     context.moveTo(space * j, canvas.height);
     context.lineTo(space * j, canvas.height-value);
+    context.moveTo(space * j, 0 + value)
+    context.lineTo(space * j, 0)
     // context.lineTo(space * j, canvas.height-128);
     context.stroke();
   })
