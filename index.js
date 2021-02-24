@@ -129,6 +129,15 @@ function draw(delay) {
     }
   })
   lastCrests = [...nextCrests]
+  context.strokeStyle = "black"
+  context.lineWidth = 4
+  context.moveTo(2, canvas.height)
+  context.lineTo(2, 0)
+  context.moveTo(canvas.width - 2, canvas.height)
+  context.lineTo(canvas.width - 2, 0)
+  context.stroke()
+  context.strokeStyle = undefined
+  context.lineWidth = 1
   context.fillStyle = `rgba(0,0,0,0.01)`
   context.fillRect(0, 0, canvas.width, canvas.height)
   context.scale(0.999, 0.999)
