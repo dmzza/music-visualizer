@@ -138,7 +138,11 @@ function draw(delay) {
   context.stroke()
   context.strokeStyle = undefined
   context.lineWidth = 1
-  context.fillStyle = `rgba(0,0,0,0.01)`
+  if(i % 133 == 0) {
+    context.fillStyle = `rgba(0,0,0,0.1)`
+  } else {
+    context.fillStyle = `rgba(0,0,0,0.01)`
+  }
   context.fillRect(0, 0, canvas.width, canvas.height)
   context.scale(0.999, 0.999)
   context.drawImage(canvas, canvas.width / 2000, canvas.height / 2000)
