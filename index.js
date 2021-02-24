@@ -131,6 +131,10 @@ function draw(delay) {
   lastCrests = [...nextCrests]
   context.fillStyle = `rgba(0,0,0,0.01)`
   context.fillRect(0, 0, canvas.width, canvas.height)
+  context.scale(0.999, 0.999)
+  context.drawImage(canvas, canvas.width / 2000, canvas.height / 2000)
+  context.resetTransform()
+
   const dataLength = data.length
   const space = canvas.width / dataLength
   const maxIndex = dataLength - 1
