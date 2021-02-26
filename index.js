@@ -144,9 +144,10 @@ function draw(delay) {
     context.fillStyle = `rgba(0,0,0,0.01)`
   }
   context.fillRect(0, 0, canvas.width, canvas.height)
-  context.scale(0.999, 0.999)
-  context.drawImage(canvas, canvas.width / 2000, canvas.height / 2000)
-  context.resetTransform()
+  // let image = context.getImageData(0, 0, canvas.width, canvas.height)
+  const scaleDownPercentage = 0.001
+  // context.scale(1.00 - scaleDownPercentage, 1.00 - scaleDownPercentage)
+  context.drawImage(canvas, scaleDownPercentage * 0.5 * canvas.width, scaleDownPercentage * 0.5 * canvas.height, (1 - scaleDownPercentage) * canvas.width, (1 - scaleDownPercentage) * canvas.height)
 
   const dataLength = data.length
   const space = canvas.width / dataLength
