@@ -165,6 +165,10 @@ function draw(delay) {
     } else if(crestIsActive[5] && j >= nextCrests[5][0] && j <= nextCrests[5][1]) {
       color = palette.seaGreen
     }
+    if(!crestIsActive[0] && !crestIsActive[1] && !crestIsActive[2] && !crestIsActive[3] && !crestIsActive[4] && !crestIsActive[5]) {
+      context.fillStyle = `black`
+      context.fillRect(0, 0, canvas.width, canvas.height)
+    }
     
     context.beginPath();
     context.strokeStyle = color
